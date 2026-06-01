@@ -690,12 +690,29 @@ do
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
-    --
-    -- Some languages (like typescript) have entire language plugins that can be useful:
-    --    https://github.com/pmizio/typescript-tools.nvim
-    --
-    -- But for many setups, the LSP (`ts_ls`) will work just fine
-    -- ts_ls = {},
+
+    ruff = { -- python formatter
+      on_attach = function(client)
+        client.server_capabilities.hoverProvider = false
+      end,
+    },
+    ty = {}, -- python type cheker
+    ts_ls = {
+      on_attach = function(client)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end,
+      -- Optional: let `ts_ls` resolve `.svelte` imports in `.ts` files. This
+      -- requires `typescript-svelte-plugin` to be resolvable in the project.
+      -- init_options = {
+      --   plugins = {
+      --     { name = 'typescript-svelte-plugin', location = '' },
+      --   },
+      -- },
+    },
+    svelte = {},
+    biome = {}, -- ts/js formatter + linter
+    tailwindcss = {},
 
     stylua = {}, -- Used to format Lua code
 
@@ -777,7 +794,15 @@ do
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
         -- lua = true,
-        -- python = true,
+        python = true,
+        javascript = true,
+        javascriptreact = true,
+        typescript = true,
+        typescriptreact = true,
+        svelte = true,
+        css = true,
+        json = true,
+        jsonc = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -790,12 +815,17 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use 'stop_after_first' to run the first available formatter from the list
-      -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      -- Python (Astral): organize imports, then format. Both use the `ruff` CLI.
+      python = { 'ruff_organize_imports', 'ruff_format' },
+      -- Web stack: Biome formats everything (js/ts/svelte/css/json).
+      javascript = { 'biome' },
+      javascriptreact = { 'biome' },
+      typescript = { 'biome' },
+      typescriptreact = { 'biome' },
+      svelte = { 'biome' },
+      css = { 'biome' },
+      json = { 'biome' },
+      jsonc = { 'biome' },
     },
   }
 
@@ -898,7 +928,10 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = {
+    'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',
+    'python', 'typescript', 'tsx', 'javascript', 'jsdoc', 'svelte', 'css', 'json',
+  }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
