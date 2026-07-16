@@ -238,6 +238,14 @@ do
   -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
   -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+  -- Keybinds to create, close, and resize windows.
+  --  See `:help window` and `:help windows-intro`
+  vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = '[W]indow [V]ertical split' })
+  vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = '[W]indow horizontal [S]plit' })
+  vim.keymap.set('n', '<leader>wd', '<C-w>c', { desc = '[W]indow [D]elete/close' })
+  vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = '[W]indow [O]nly keep current' })
+  vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = '[W]indow equalize' })
+
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 
