@@ -76,8 +76,9 @@ These are commented out at the bottom of `init.lua` — uncomment to enable:
 
 ### Search (FFF + Telescope) — `<leader>s…`
 
-FFF handles project file search and live grep during this trial. All other
-search shortcuts still use Telescope, including resume (`<leader>sr`), which
+FFF handles project file search, live grep, current-word/visual-selection search,
+and Neovim config file search during this trial. All other search shortcuts still
+use Telescope, including resume (`<leader>sr`), which
 resumes only Telescope pickers. `rg` is still needed for Telescope grep searches.
 
 FFF's native library is downloaded on plugin install/update, with a source-build
@@ -92,13 +93,13 @@ rescan the project files.
 | `<leader>sk` | Search **K**eymaps |
 | `<leader>sf` | Search **F**iles (FFF) |
 | `<leader>ss` | **S**elect Telescope builtin pickers |
-| `<leader>sw` | Search current **W**ord under cursor |
+| `<leader>sw` | Search current **W**ord or visual selection (FFF) |
 | `<leader>sg` | Search by **G**rep (FFF live grep) |
 | `<leader>sd` | Search **D**iagnostics |
 | `<leader>sr` | Search **R**esume (reopen last picker) |
 | `<leader>s.` | Search recent files (oldfiles) |
 | `<leader>sc` | Search **C**ommands |
-| `<leader>sn` | Search **N**eovim config files |
+| `<leader>sn` | Search **N**eovim config files (FFF) |
 | `<leader>s/` | Live grep in open files |
 | `<leader>/` | Fuzzy-find in the current buffer |
 | `<leader><leader>` | Find existing buffers |
