@@ -23,7 +23,8 @@ These are installed via `vim.pack.add` and active out of the box.
 | [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | Highlights `TODO`, `FIXME`, `HACK`, etc. in comments |
 | [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Collection — this config uses `mini.ai`, `mini.surround`, `mini.statusline` |
 | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Lua utility library (Telescope dependency) |
-| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder for files, grep, symbols, etc. |
+| [fff](https://github.com/dmtrKovalenko/fff) | Project file search and live grep, backed by a native Rust library |
+| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Remaining pickers: help, buffers, diagnostics, LSP, scoped searches, etc. |
 | [telescope-ui-select.nvim](https://github.com/nvim-telescope/telescope-ui-select.nvim) | Routes `vim.ui.select` through Telescope |
 | [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) | Faster fuzzy sorting (only if `make` is available) |
 | [fidget.nvim](https://github.com/j-hui/fidget.nvim) | LSP progress notifications in the corner |
@@ -73,15 +74,26 @@ These are commented out at the bottom of `init.lua` — uncomment to enable:
 | `:terminal` / `:vsplit \| term` | Open built-in terminal (no plugin) |
 | `<Esc><Esc>` | Exit terminal mode (back to normal mode) |
 
-### Search (Telescope) — `<leader>s…`
+### Search (FFF + Telescope) — `<leader>s…`
+
+FFF handles project file search and live grep during this trial. All other
+search shortcuts still use Telescope, including resume (`<leader>sr`), which
+resumes only Telescope pickers. `rg` is still needed for Telescope grep searches.
+
+FFF's native library is downloaded on plugin install/update, with a source-build
+fallback (requires Rust/Cargo and rustup). No separate FFF CLI installation is
+needed. After installation, use `:FFFHealth` to check it; if the binary is missing,
+run `:lua require('fff.download').download_or_build_binary()`. Use `:FFFScan` to
+rescan the project files.
+
 | Shortcut | Action |
 |---|---|
 | `<leader>sh` | Search **H**elp tags |
 | `<leader>sk` | Search **K**eymaps |
-| `<leader>sf` | Search **F**iles |
+| `<leader>sf` | Search **F**iles (FFF) |
 | `<leader>ss` | **S**elect Telescope builtin pickers |
 | `<leader>sw` | Search current **W**ord under cursor |
-| `<leader>sg` | Search by **G**rep (live grep) |
+| `<leader>sg` | Search by **G**rep (FFF live grep) |
 | `<leader>sd` | Search **D**iagnostics |
 | `<leader>sr` | Search **R**esume (reopen last picker) |
 | `<leader>s.` | Search recent files (oldfiles) |

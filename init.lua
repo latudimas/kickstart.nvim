@@ -306,6 +306,12 @@ do
       local kind = ev.data.kind
       if kind ~= 'install' and kind ~= 'update' then return end
 
+      if name == 'fff' then
+        if not ev.data.active then vim.cmd.packadd 'fff' end
+        require('fff.download').download_or_build_binary()
+        return
+      end
+
       if name == 'telescope-fzf-native.nvim' and vim.fn.executable 'make' == 1 then
         run_build(name, { 'make' }, ev.data.path)
         return
@@ -457,9 +463,14 @@ end
 
 -- ============================================================
 -- SECTION 4: SEARCH & NAVIGATION
--- Telescope setup, keymaps, LSP picker mappings
+-- FFF file search/live grep; Telescope for the remaining pickers
 -- ============================================================
 do
+  -- Trial FFF for project file search and live grep. Keep Telescope below for
+  -- help, buffers, diagnostics, LSP, and other pickers during the migration.
+  vim.g.fff = { lazy_sync = true }
+  vim.pack.add { gh 'dmtrKovalenko/fff' }
+
   -- [[ Fuzzy Finder (files, lsp, etc) ]]
   --
   -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -519,10 +530,10 @@ do
   local builtin = require 'telescope.builtin'
   vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
   vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>sf', function() require('fff').find_files() end, { desc = '[S]earch [F]iles (FFF)' })
   vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
   vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-  vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+  vim.keymap.set('n', '<leader>sg', function() require('fff').live_grep() end, { desc = '[S]earch by [G]rep (FFF)' })
   vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
