@@ -468,7 +468,10 @@ end
 do
   -- Trial FFF for project file search and live grep. Keep Telescope below for
   -- help, buffers, diagnostics, LSP, and other pickers during the migration.
-  vim.g.fff = { lazy_sync = true }
+  vim.g.fff = {
+    lazy_sync = true,
+    layout = { prompt_position = 'top' },
+  }
   vim.pack.add { gh 'dmtrKovalenko/fff' }
 
   -- [[ Fuzzy Finder (files, lsp, etc) ]]
